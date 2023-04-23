@@ -22,7 +22,7 @@ const RegisterModal = () => {
 		formState: { errors },
 	} = useForm<FieldValues>({
 		defaultValues: {
-			name: "",
+			username: "",
 			email: "",
 			password: "",
 		},
@@ -31,8 +31,10 @@ const RegisterModal = () => {
 	const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 		setIsLoading(true);
 
+		console.log(data);
+
 		axios
-			.post("http://localhost:8080/api/auth/signup")
+			.post("/api/register", data)
 			.then(() => {
 				registerModal.onClose();
 			})
@@ -48,16 +50,16 @@ const RegisterModal = () => {
 		<div className="flex flex-col gap-4">
 			<Heading title="Welcome to Airbnb" subtitle="Create an account" />
 			<Input
-				id="email"
-				label="Email"
+				id="username"
+				label="Username"
 				disabled={isLoading}
 				register={register}
 				errors={errors}
 				required
 			/>
 			<Input
-				id="name"
-				label="Name"
+				id="email"
+				label="Email"
 				disabled={isLoading}
 				register={register}
 				errors={errors}
