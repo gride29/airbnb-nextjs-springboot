@@ -1,13 +1,18 @@
-"use client";
-
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
 import { useCallback, useState } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLoginModal from "@/app/hooks/useLoginModal";
+import { signOut } from "next-auth/react";
 
-const UserMenu = () => {
+interface UserMenuProps {
+	currentUser?: any | null;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	const registerModal = useRegisterModal();
+	const loginModal = useLoginModal();
 	const [isOpen, setIsOpen] = useState(false);
 
 	// Without useCallback, toggleOpen would be recreated on every render
@@ -38,10 +43,22 @@ const UserMenu = () => {
 			{isOpen && (
 				<div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
 					<div className="flex flex-col cursor-pointer">
-						<>
-							<MenuItem onClick={() => {}} label="Login" />
-							<MenuItem onClick={registerModal.onOpen} label="Sign up" />
-						</>
+						{currentUser ? (
+							<>
+								<MenuItem label="My trips" onClick={() => {}} />
+								<MenuItem label="My favorites" onClick={() => {}} />
+								<MenuItem label="My reservations" onClick={() => {}} />
+								<MenuItem label="My properties" onClick={() => {}} />
+								<MenuItem label="Airbnb your home" onClick={() => {}} />
+								<hr />
+								<MenuItem label="Logout" onClick={() => signOut()} />
+							</>
+						) : (
+							<>
+								<MenuItem label="Login" onClick={loginModal.onOpen} />
+								<MenuItem label="Sign up" onClick={registerModal.onOpen} />
+							</>
+						)}
 					</div>
 				</div>
 			)}
