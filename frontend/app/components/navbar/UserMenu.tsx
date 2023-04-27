@@ -5,12 +5,16 @@ import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { signOut } from "next-auth/react";
+import { setCookie } from "cookies-next";
+import { destroyCookie } from "nookies";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
 	currentUser?: any | null;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+	const router = useRouter();
 	const registerModal = useRegisterModal();
 	const loginModal = useLoginModal();
 	const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +23,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	const toggleOpen = useCallback(() => {
 		setIsOpen((prev) => !prev);
 	}, []);
+
+	const handleCustomSignOut = async () => {
+		if (currentUser.isOAuthUser) {
+			const res = await fetch(`/api/oAuthSignOut`);
+			router.refresh();
+		} else {
+			signOut();
+		}
+	};
 
 	return (
 		<div className="relative">
@@ -51,7 +64,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 								<MenuItem label="My properties" onClick={() => {}} />
 								<MenuItem label="Airbnb your home" onClick={() => {}} />
 								<hr />
-								<MenuItem label="Logout" onClick={() => signOut()} />
+								<MenuItem
+									label="Logout"
+									onClick={() => handleCustomSignOut()}
+								/>
 							</>
 						) : (
 							<>

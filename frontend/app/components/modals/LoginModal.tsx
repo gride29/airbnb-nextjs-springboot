@@ -79,15 +79,11 @@ const LoginModal = () => {
 			<hr />
 			<Button
 				outline
-				label="Continue with Google"
-				icon={FcGoogle}
-				onClick={() => {}}
-			/>
-			<Button
-				outline
 				label="Continue with Github"
 				icon={AiFillGithub}
-				onClick={() => {}}
+				onClick={() => {
+					router.push("http://localhost:8080/oauth2/authorization/github");
+				}}
 			/>
 			<div className="text-neutral-500 text-center mt-4 font-light ">
 				<p>

@@ -8,14 +8,6 @@ import { setCookie } from "nookies";
 const nextAuthOptions = (req, res) => {
 	return {
 		providers: [
-			GithubProvider({
-				clientId: process.env.GITHUB_ID,
-				clientSecret: process.env.GITHUB_SECRET,
-			}),
-			GoogleProvider({
-				clientId: process.env.GOOGLE_CLIENT_ID,
-				clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-			}),
 			CredentialsProvider({
 				name: "credentials",
 				credentials: {
@@ -57,6 +49,7 @@ const nextAuthOptions = (req, res) => {
 		events: {
 			async signOut() {
 				setCookie({ res }, "user", "", {
+					maxAge: -1,
 					path: "/",
 					httpOnly: true,
 				});

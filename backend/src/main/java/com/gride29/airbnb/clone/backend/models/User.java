@@ -32,6 +32,9 @@ public class User {
   @DBRef
   private Set<Role> roles = new HashSet<>();
 
+  @NotBlank
+  private String avatarUrl;
+
   public User() {
   }
 
@@ -39,6 +42,12 @@ public class User {
     this.username = username;
     this.email = email;
     this.password = password;
+  }
+
+  public User(String username, String email, boolean isGithubUser, String avatarUrl) {
+    this.username = username;
+    this.email = email;
+    this.avatarUrl = avatarUrl;
   }
 
   public String getId() {

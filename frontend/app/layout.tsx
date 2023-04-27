@@ -6,6 +6,7 @@ import { Nunito } from "next/font/google";
 import ToasterProvider from "./providers/ToasterProvider";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
+import oAuthSignOut from "../pages/api/oAuthSignOut";
 
 export const metadata = {
 	title: "Airbnb",
@@ -16,12 +17,12 @@ const font = Nunito({
 	subsets: ["latin"],
 }); // https://nextjs.org/docs/basic-features/font-optimization
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const user = getCurrentUser();
+	const user = await getCurrentUser();
 
 	return (
 		<html lang="en">
