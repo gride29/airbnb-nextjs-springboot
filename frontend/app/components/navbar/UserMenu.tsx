@@ -5,9 +5,8 @@ import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { signOut } from "next-auth/react";
-import { setCookie } from "cookies-next";
-import { destroyCookie } from "nookies";
 import { useRouter } from "next/navigation";
+import { BiLogInCircle } from "react-icons/bi";
 
 interface UserMenuProps {
 	currentUser?: any | null;
@@ -48,7 +47,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 				>
 					<AiOutlineMenu />
 					<div className="hidden md:block">
-						<Avatar />
+						{currentUser ? (
+							<Avatar src={currentUser?.avatarUrl} />
+						) : (
+							<BiLogInCircle size={28} />
+						)}
 					</div>
 				</div>
 			</div>

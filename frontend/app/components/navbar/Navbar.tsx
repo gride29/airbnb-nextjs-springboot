@@ -6,6 +6,7 @@ import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { parseCookies } from "nookies";
+import Categories from "./Categories";
 
 interface NavbarProps {
 	currentUser?: any | null;
@@ -25,6 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
 					</div>
 				</Container>
 			</div>
+			<Categories />
 		</div>
 	);
 };
