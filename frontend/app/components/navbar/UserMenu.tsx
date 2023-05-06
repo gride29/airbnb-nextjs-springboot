@@ -7,6 +7,7 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { BiLogInCircle } from "react-icons/bi";
+import useRentModal from "@/app/hooks/useRentModal";
 
 interface UserMenuProps {
 	currentUser?: any | null;
@@ -14,6 +15,7 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	const router = useRouter();
+	const rentModal = useRentModal();
 	const registerModal = useRegisterModal();
 	const loginModal = useLoginModal();
 	const [isOpen, setIsOpen] = useState(false);
@@ -32,11 +34,19 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 		}
 	};
 
+	const onRent = useCallback(() => {
+		if (!currentUser) {
+			loginModal.onOpen();
+		}
+
+		rentModal.onOpen();
+	}, [currentUser, loginModal]);
+
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
 				<div
-					onClick={() => {}}
+					onClick={onRent}
 					className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-netural-100 transition cursor-pointer"
 				>
 					Airbnb your home
@@ -65,7 +75,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 								<MenuItem label="My favorites" onClick={() => {}} />
 								<MenuItem label="My reservations" onClick={() => {}} />
 								<MenuItem label="My properties" onClick={() => {}} />
-								<MenuItem label="Airbnb your home" onClick={() => {}} />
+								<MenuItem label="Airbnb your home" onClick={rentModal.onOpen} />
 								<hr />
 								<MenuItem
 									label="Logout"
