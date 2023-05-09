@@ -51,6 +51,7 @@ public class ListingController {
                         listing.getCategory(),
                         listing.getImageSrc(),
                         listing.getLocationValue(),
+                        listing.getUserEmail(),
                         listing.getGuestCount(),
                         listing.getRoomCount(),
                         listing.getBathroomCount(),

@@ -19,6 +19,8 @@ public class Listing {
 
     private String locationValue;
 
+    private String userEmail;
+
     private int guestCount;
 
     private int roomCount;
@@ -31,12 +33,13 @@ public class Listing {
 
     }
 
-    public Listing(String title, String description, String category, String imageSrc, String locationValue, int guestCount, int roomCount, int bathroomCount, int price) {
+    public Listing(String title, String description, String category, String imageSrc, String locationValue, String userEmail, int guestCount, int roomCount, int bathroomCount, int price) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.imageSrc = imageSrc;
         this.locationValue = locationValue;
+        this.userEmail = userEmail;
         this.guestCount = guestCount;
         this.roomCount = roomCount;
         this.bathroomCount = bathroomCount;
@@ -73,6 +76,14 @@ public class Listing {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getImageSrc() {

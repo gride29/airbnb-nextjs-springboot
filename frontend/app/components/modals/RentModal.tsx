@@ -93,6 +93,8 @@ const RentModal: React.FC<RentModalProps> = ({ currentUser }) => {
 
 		data.location = data.location.value; // extract country code
 
+		data.userEmail = currentUser.email;
+
 		let customHeaders = {};
 
 		if (currentUser.isOAuthUser) {
