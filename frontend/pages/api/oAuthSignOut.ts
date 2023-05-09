@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-import axios from "axios";
 import { setCookie } from "nookies";
 import { NextApiRequest, NextApiResponse } from "next";
 

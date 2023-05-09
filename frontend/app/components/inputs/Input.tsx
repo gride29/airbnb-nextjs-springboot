@@ -12,6 +12,7 @@ interface InputProps {
 	required?: boolean;
 	register: UseFormRegister<FieldValues>;
 	errors: FieldErrors;
+	isTextArea?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -23,22 +24,24 @@ const Input: React.FC<InputProps> = ({
 	register,
 	required,
 	errors,
+	isTextArea,
 }) => {
 	return (
 		<div className="w-full relative">
 			{formatPrice && (
 				<BiDollar
 					size={24}
-					className="text-neutral-700 absolute top-5 left-2"
+					className="text-neutral-700 absolute top-6 left-2"
 				/>
 			)}
-			<input
-				id={id}
-				disabled={disabled}
-				{...register(id, { required })}
-				placeholder=" "
-				type={type}
-				className={`
+			{isTextArea ? (
+				<textarea
+					id={id}
+					disabled={disabled}
+					{...register(id, { required })}
+					placeholder=" "
+					rows={4}
+					className={`
                     peer
                     w-full
                     p-4
@@ -53,9 +56,43 @@ const Input: React.FC<InputProps> = ({
                     disabled:cursor-not-allowed
                     ${formatPrice ? "pl-9" : "pl-4"}
                     ${errors[id] ? "border-rose-500" : "border-neutral-300"}
-                    ${errors[id] ? "focus:border-rose-500" : "focus:border-black"}
+                    ${
+											errors[id]
+												? "focus:border-rose-500"
+												: "focus:border-black"
+										}
                 `}
-			/>
+				/>
+			) : (
+				<input
+					id={id}
+					disabled={disabled}
+					{...register(id, { required })}
+					placeholder=" "
+					type={type}
+					className={`
+                    peer
+                    w-full
+                    p-4
+                    pt-8 
+                    font-light 
+                    bg-white 
+                    border-2
+                    rounded-md
+                    outline-none
+                    transition
+                    disabled:opacity-70
+                    disabled:cursor-not-allowed
+                    ${formatPrice ? "pl-9" : "pl-4"}
+                    ${errors[id] ? "border-rose-500" : "border-neutral-300"}
+                    ${
+											errors[id]
+												? "focus:border-rose-500"
+												: "focus:border-black"
+										}
+                `}
+				/>
+			)}
 			<label
 				className={`
                     absolute 
