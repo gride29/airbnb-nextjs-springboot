@@ -93,23 +93,11 @@ const RentModal: React.FC<RentModalProps> = ({ currentUser }) => {
 
 		data.location = data.location.value; // extract country code
 
-		data.userEmail = currentUser.email;
+		data.userEmail = currentUser.email; // add user email
 
-		let customHeaders = {};
+		const customData = { data: data, customHeaders: currentUser.customHeaders };
 
-		if (currentUser.isOAuthUser) {
-			customHeaders = {
-				Cookie: `JSESSIONID=${currentUser.JSESSIONID}`,
-			};
-		} else {
-			customHeaders = {
-				Authorization: `Bearer ${currentUser.accessToken}`,
-			};
-		}
-
-		const customData = { data: data, customHeaders: customHeaders };
-
-		// console.log(customData);
+		console.log("customData", customData);
 
 		axios
 			.post("/api/listings", customData)
@@ -280,7 +268,7 @@ const RentModal: React.FC<RentModalProps> = ({ currentUser }) => {
 			secondaryActionLabel={secondaryActionLabel}
 			secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
 			body={bodyContent}
-			title="Airbnb your home!"
+			title="Rent your place"
 		/>
 	);
 };

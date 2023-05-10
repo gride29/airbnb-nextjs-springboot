@@ -1,16 +1,32 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-async function handleListingAdd(data: any, customHeaders: any) {
-	let listingData = null;
+async function handleGetListings(customHeaders: any) {
+	let listings = null;
+
+	return axios
+		.get("http://localhost:8080/api/listings", {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			listings = response.data;
+			return listings;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+async function handleAddListing(data: any, customHeaders: any) {
+	let addedListing = null;
 
 	return axios
 		.post("http://localhost:8080/api/listings", data, {
 			headers: customHeaders,
 		})
 		.then((response) => {
-			listingData = response.data;
-			return listingData;
+			addedListing = response.data;
+			return addedListing;
 		})
 		.catch((error) => {
 			console.log(error);
@@ -25,17 +41,26 @@ export default async function handler(
 		switch (req.method) {
 			case "POST": {
 				try {
-					if (req.headers.referer !== "http://localhost:3000/") {
-						res.status(401).end("Not authorized");
+					if (
+						req.headers.referer !== "http://localhost:3000/" &&
+						req.headers.host !== "localhost:3000"
+					) {
+						console.log(req.headers.host);
+						res.status(401).end("Not authorized witojcie");
 						return;
 					} else {
 						const { data, customHeaders } = req.body; // Assuming the request body contains a "data" field
 
-						// console.log(customHeaders, data);
+						let listingData = null;
 
-						await handleListingAdd(data, customHeaders);
+						// If data object is present, we add a listing, otherwise we get all listings
+						if (data) {
+							listingData = await handleAddListing(data, customHeaders);
+						} else {
+							listingData = await handleGetListings(customHeaders);
+						}
 
-						res.status(200).json({ message: "Data received" });
+						res.status(200).json(listingData);
 						return resolve();
 					}
 				} catch (error) {

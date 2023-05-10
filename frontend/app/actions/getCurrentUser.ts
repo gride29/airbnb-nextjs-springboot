@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
 import axios from "axios";
-import { signOut } from "next-auth/react";
-import Router from "next/navigation";
 
 const parseJwt = (token: string) => {
 	try {
@@ -15,6 +13,13 @@ export default async function getCurrentUser() {
 	// Retrieve user from cookies
 	const cookieStore = cookies();
 	let user = JSON.parse(cookieStore.get("user")?.value || "null");
+
+	if (user) {
+		// Set custom headers for axios
+		user.customHeaders = {
+			Authorization: `Bearer ${user.accessToken}`,
+		};
+	}
 
 	if (user) {
 		const decodedJwt = parseJwt(user.accessToken);
@@ -43,6 +48,10 @@ export default async function getCurrentUser() {
 			.then((response) => {
 				user = response.data;
 				user.JSESSIONID = cookieValue;
+				// Set custom headers for axios
+				user.customHeaders = {
+					Cookie: `JSESSIONID=${user.JSESSIONID}`,
+				};
 				return user;
 			})
 			.catch((error) => {

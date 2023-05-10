@@ -50,7 +50,7 @@ public class ListingController {
                         listing.getDescription(),
                         listing.getCategory(),
                         listing.getImageSrc(),
-                        listing.getLocationValue(),
+                        listing.getLocation(),
                         listing.getUserEmail(),
                         listing.getGuestCount(),
                         listing.getRoomCount(),
