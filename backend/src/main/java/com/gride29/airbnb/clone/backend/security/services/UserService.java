@@ -35,15 +35,25 @@ public class UserService {
 
         if (user != null) {
             String[] favorites = user.getFavoriteListings();
-            if (Arrays.asList(favorites).contains(favoriteListingValue)) {
-                alreadyAdded = true;
-            } else {
-                String[] updatedFavorites = Arrays.copyOf(favorites, favorites.length + 1);
-                updatedFavorites[favorites.length] = favoriteListingValue;
+            if (favorites == null) {
+                // If favorites is null, create a new array with a single value
+                String[] updatedFavorites = new String[]{favoriteListingValue};
                 user.setFavoriteListings(updatedFavorites);
                 userRepository.save(user);
+            } else {
+                if (Arrays.asList(favorites).contains(favoriteListingValue)) {
+                    // Already added
+                    alreadyAdded = true;
+                } else {
+                    // Add the new favorite listing
+                    String[] updatedFavorites = Arrays.copyOf(favorites, favorites.length + 1);
+                    updatedFavorites[favorites.length] = favoriteListingValue;
+                    user.setFavoriteListings(updatedFavorites);
+                    userRepository.save(user);
+                }
             }
         }
+
         if (alreadyAdded) {
             return null;
         } else {
@@ -61,10 +71,14 @@ public class UserService {
 
         if (user != null) {
             String[] favorites = user.getFavoriteListings();
-            List<String> updatedFavorites = new ArrayList<>(Arrays.asList(favorites));
-            isRemoved = updatedFavorites.remove(favoriteListingValue);
-            user.setFavoriteListings(updatedFavorites.toArray(new String[0]));
-            userRepository.save(user);
+            if (favorites != null) {
+                List<String> updatedFavorites = new ArrayList<>(Arrays.asList(favorites));
+                isRemoved = updatedFavorites.remove(favoriteListingValue);
+                if (isRemoved) {
+                    user.setFavoriteListings(updatedFavorites.toArray(new String[0]));
+                    userRepository.save(user);
+                }
+            }
         }
 
         if (isRemoved) {

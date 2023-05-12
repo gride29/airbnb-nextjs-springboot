@@ -62,7 +62,7 @@ export default async function handler(
 						req.headers.host !== "localhost:3000"
 					) {
 						console.log(req.headers.host);
-						res.status(401).end("Not authorized witojcie");
+						res.status(401).end("Not authorized");
 						return;
 					} else {
 						const { data, customHeaders, id } = req.body; // Assuming the request body contains a "data" field

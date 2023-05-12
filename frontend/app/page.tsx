@@ -1,6 +1,5 @@
 import getCurrentUser from "./actions/getCurrentUser";
-import getListingById from "./actions/getListingById";
-import getListings from "./actions/getListings";
+import { getListings, getListingById } from "./actions/listingsActions";
 import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";

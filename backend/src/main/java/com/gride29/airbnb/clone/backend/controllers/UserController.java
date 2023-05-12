@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/{userId}/favorites")
+    @GetMapping("/favorites/{userId}")
     public ResponseEntity<Map<String, Object>> getFavoriteListings(@PathVariable String userId) {
         String[] favorites = userService.getFavoriteListings(userId);
         Map<String, Object> response = new HashMap<>();
@@ -27,7 +27,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{userId}/favorites")
+    @PostMapping("/favorites/{userId}")
     public ResponseEntity<Map<String, Object>> addFavoriteListing(
             @PathVariable String userId,
             @RequestBody String favoriteListing
@@ -45,7 +45,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userId}/favorites")
+    @DeleteMapping("/favorites/{userId}")
     public ResponseEntity<Map<String, Object>> removeFavoriteListing(
             @PathVariable String userId,
             @RequestBody String favoriteListing
