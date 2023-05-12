@@ -1,4 +1,5 @@
 import getCurrentUser from "./actions/getCurrentUser";
+import getListingById from "./actions/getListingById";
 import getListings from "./actions/getListings";
 import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
@@ -8,6 +9,9 @@ import ListingCard from "./components/listings/ListingCard";
 export default async function Home() {
 	const user = await getCurrentUser();
 	const listings = await getListings();
+
+	// const listing = await getListingById("645c1b4d73e186643c9019d5");
+	// console.log("fetched listing", listing);
 
 	if (!listings) {
 		return (

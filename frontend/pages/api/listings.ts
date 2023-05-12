@@ -17,6 +17,22 @@ async function handleGetListings(customHeaders: any) {
 		});
 }
 
+async function handleGetListingById(id: string, customHeaders: any) {
+	let listings = null;
+
+	return axios
+		.get(`http://localhost:8080/api/listings/${id}`, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			listings = response.data;
+			return listings;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
 async function handleAddListing(data: any, customHeaders: any) {
 	let addedListing = null;
 
@@ -49,15 +65,20 @@ export default async function handler(
 						res.status(401).end("Not authorized witojcie");
 						return;
 					} else {
-						const { data, customHeaders } = req.body; // Assuming the request body contains a "data" field
+						const { data, customHeaders, id } = req.body; // Assuming the request body contains a "data" field
 
 						let listingData = null;
 
-						// If data object is present, we add a listing, otherwise we get all listings
-						if (data) {
-							listingData = await handleAddListing(data, customHeaders);
-						} else {
-							listingData = await handleGetListings(customHeaders);
+						switch (true) {
+							case "data" in req.body:
+								listingData = await handleAddListing(data, customHeaders);
+								break;
+							case "id" in req.body:
+								listingData = await handleGetListingById(id, customHeaders);
+								break;
+							case "customHeaders" in req.body:
+								listingData = await handleGetListings(customHeaders);
+								break;
 						}
 
 						res.status(200).json(listingData);
