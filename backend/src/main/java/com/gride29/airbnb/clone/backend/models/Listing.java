@@ -3,6 +3,8 @@ package com.gride29.airbnb.clone.backend.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document
 public class Listing {
 
@@ -21,6 +23,8 @@ public class Listing {
 
     private String userEmail;
 
+    private LocalDateTime createdAt;
+
     private int guestCount;
 
     private int roomCount;
@@ -33,13 +37,14 @@ public class Listing {
 
     }
 
-    public Listing(String title, String description, String category, String imageSrc, String location, String userEmail, int guestCount, int roomCount, int bathroomCount, int price) {
+    public Listing(String title, String description, String category, String imageSrc, String location, String userEmail, LocalDateTime createdAt, int guestCount, int roomCount, int bathroomCount, int price) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.imageSrc = imageSrc;
         this.location = location;
         this.userEmail = userEmail;
+        this.createdAt = createdAt;
         this.guestCount = guestCount;
         this.roomCount = roomCount;
         this.bathroomCount = bathroomCount;
@@ -84,6 +89,14 @@ public class Listing {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getImageSrc() {
