@@ -1,6 +1,6 @@
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "../Avatar";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
@@ -42,6 +42,28 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 		}
 	}, [currentUser, loginModal]);
 
+	const handleClickOutside = useCallback((event: MouseEvent) => {
+		const target = event.target as HTMLElement;
+		const menuElement = document.getElementById("user-menu");
+
+		if (
+			menuElement &&
+			!menuElement.contains(target) &&
+			!target.closest(".user-menu-trigger")
+		) {
+			setTimeout(() => {
+				setIsOpen(false);
+			}, 100); // Delay the closing of the menu to handle the subsequent click
+		}
+	}, []);
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [handleClickOutside]);
+
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-2">
@@ -53,6 +75,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 				</div>
 				<div
 					onClick={toggleOpen}
+					id="user-menu"
 					className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
 				>
 					<AiOutlineMenu />
