@@ -47,12 +47,14 @@ export default async function getCurrentUser() {
 			})
 			.then((response) => {
 				user = response.data;
-				user.JSESSIONID = cookieValue;
-				// Set custom headers for axios
-				user.customHeaders = {
-					Cookie: `JSESSIONID=${user.JSESSIONID}`,
-				};
-				return user;
+				if (user) {
+					user.JSESSIONID = cookieValue;
+					// Set custom headers for axios
+					user.customHeaders = {
+						Cookie: `JSESSIONID=${user.JSESSIONID}`,
+					};
+					return user;
+				}
 			})
 			.catch((error) => {
 				console.log(error);
