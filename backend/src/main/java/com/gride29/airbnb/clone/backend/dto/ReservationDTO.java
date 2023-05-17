@@ -1,14 +1,9 @@
-package com.gride29.airbnb.clone.backend.models;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.gride29.airbnb.clone.backend.dto;
 
 import java.time.LocalDateTime;
 
-@Document
-public class Reservation {
+public class ReservationDTO {
 
-    @Id
     private String id;
 
     private String userId;
@@ -23,18 +18,7 @@ public class Reservation {
 
     private LocalDateTime createdAt;
 
-    private Listing listing;
-
-    public Reservation() {
-    }
-
-    public Reservation(String userId, String listingId, LocalDateTime startDate, LocalDateTime endDate, int totalPrice, LocalDateTime createdAt) {
-        this.userId = userId;
-        this.listingId = listingId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.totalPrice = totalPrice;
-        this.createdAt = createdAt;
+    public ReservationDTO() {
     }
 
     public String getId() {
@@ -93,14 +77,6 @@ public class Reservation {
         this.createdAt = createdAt;
     }
 
-    public Listing getListing() {
-        return listing;
-    }
-
-    public void setListing(Listing listing) {
-        this.listing = listing;
-    }
-
     @Override
     public String toString() {
         return "Reservation{" +
@@ -114,3 +90,4 @@ public class Reservation {
                 '}';
     }
 }
+

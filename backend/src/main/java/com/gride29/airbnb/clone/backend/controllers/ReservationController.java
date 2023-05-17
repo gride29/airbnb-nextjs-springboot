@@ -1,5 +1,6 @@
 package com.gride29.airbnb.clone.backend.controllers;
 
+import com.gride29.airbnb.clone.backend.dto.ReservationDTO;
 import com.gride29.airbnb.clone.backend.models.Reservation;
 import com.gride29.airbnb.clone.backend.security.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ReservationController {
 
     @GetMapping("/reservations")
     @ResponseStatus(HttpStatus.OK)
-    public List<Reservation> getAllReservations() {
+    public List<ReservationDTO> getAllReservations() {
         return reservationService.findAll();
     }
 

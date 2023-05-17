@@ -71,6 +71,25 @@ async function handleAddReservation(data: any, customHeaders: any) {
 		});
 }
 
+async function handleRemoveReservationById(
+	reservationId: string,
+	customHeaders: any
+) {
+	let status = null;
+
+	return axios
+		.delete(`http://localhost:8080/api/reservations/${reservationId}`, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			status = response.status;
+			return status;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
@@ -87,7 +106,8 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { data, customHeaders, listingId, userId } = req.body; // Assuming the request body contains a "data" field
+						const { data, customHeaders, listingId, userId, reservationId } =
+							req.body; // Assuming the request body contains a "data" field
 
 						let reservationData = null;
 
@@ -110,6 +130,11 @@ export default async function handler(
 									customHeaders
 								);
 								break;
+							case "reservationId" in req.body:
+								reservationData = await handleRemoveReservationById(
+									reservationId,
+									customHeaders
+								);
 							case "customHeaders" in req.body:
 								reservationData = await handleGetReservations(customHeaders);
 								break;
