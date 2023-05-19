@@ -36,6 +36,8 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 					src={imageSrc}
 					fill
 					className="object-cover w-full"
+					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+					priority
 				/>
 				<div className="absolute top-5 right-5">
 					<HeartButton listingId={id} currentUser={currentUser} />

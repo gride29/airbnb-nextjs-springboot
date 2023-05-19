@@ -21,7 +21,7 @@ public class Listing {
 
     private String location;
 
-    private String userEmail;
+    private String userId;
 
     private LocalDateTime createdAt;
 
@@ -37,13 +37,13 @@ public class Listing {
 
     }
 
-    public Listing(String title, String description, String category, String imageSrc, String location, String userEmail, LocalDateTime createdAt, int guestCount, int roomCount, int bathroomCount, int price) {
+    public Listing(String title, String description, String category, String imageSrc, String location, String userId, LocalDateTime createdAt, int guestCount, int roomCount, int bathroomCount, int price) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.imageSrc = imageSrc;
         this.location = location;
-        this.userEmail = userEmail;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.guestCount = guestCount;
         this.roomCount = roomCount;
@@ -83,12 +83,12 @@ public class Listing {
         this.category = category;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -4,7 +4,7 @@ import getCurrentUser from "./getCurrentUser";
 interface IParams {
 	listingId?: string;
 	userId?: string;
-	authorId?: string;
+	ownerId?: string;
 }
 
 export async function getReservationsByListingId(listingId: string) {
@@ -45,9 +45,28 @@ export async function getReservationsByUserId(userId: string) {
 	}
 }
 
+export async function getReservationsByOwnerId(ownerId: string) {
+	const user = await getCurrentUser();
+	let reservations = [];
+	if (user) {
+		return axios
+			.post("http://localhost:3000/api/reservations", {
+				customHeaders: user.customHeaders,
+				ownerId,
+			})
+			.then((response) => {
+				reservations = response.data;
+				return reservations;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+}
+
 export default async function getReservations(params: IParams) {
 	try {
-		const { listingId, userId, authorId } = params;
+		const { listingId, userId, ownerId } = params;
 
 		const query: any = {};
 
@@ -61,8 +80,8 @@ export default async function getReservations(params: IParams) {
 			reservationsData = await getReservationsByUserId(userId);
 		}
 
-		if (authorId) {
-			// query.listing = { userId: authorId };
+		if (ownerId) {
+			reservationsData = await getReservationsByOwnerId(ownerId);
 		}
 
 		return reservationsData;

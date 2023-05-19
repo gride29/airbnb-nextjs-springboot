@@ -59,7 +59,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 		setIsLoading(true);
 
 		const customData = {
-			data: {
+			reservationData: {
 				totalPrice,
 				startDate: addDays(dateRange.startDate, 1),
 				endDate: addDays(dateRange.endDate, 1),

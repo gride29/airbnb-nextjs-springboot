@@ -59,6 +59,24 @@ public class ReservationService {
         return reservations;
     }
 
+    public List<Reservation> findByListingOwner(String listingCreatorId) {
+        List<Listing> listings = listingRepository.findByUserId(listingCreatorId);
+
+        List<String> listingIds = listings.stream()
+                .map(Listing::getId)
+                .collect(Collectors.toList());
+
+        List<Reservation> reservations = listingIds.stream()
+                .flatMap(listingId -> reservationRepository.findByListingId(listingId).stream())
+                .collect(Collectors.toList());
+
+        reservations.forEach(reservation -> {
+            listingRepository.findById(reservation.getListingId()).ifPresent(reservation::setListing);
+        });
+        
+        return reservations;
+    }
+
     public Reservation save(Reservation reservation) {
         return reservationRepository.save(reservation);
     }

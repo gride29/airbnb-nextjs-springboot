@@ -84,18 +84,21 @@ const RentModal: React.FC<RentModalProps> = ({ currentUser }) => {
 		setStep((prev) => prev + 1);
 	};
 
-	const onSubmit: SubmitHandler<FieldValues> = (data) => {
+	const onSubmit: SubmitHandler<FieldValues> = (listingData) => {
 		if (step !== STEPS.DESCRIPTION) {
 			return onNext();
 		}
 
 		setIsLoading(true);
 
-		data.location = data.location.value; // extract country code
+		listingData.location = listingData.location.value; // extract country code
 
-		data.userEmail = currentUser.email; // add user email
+		listingData.userId = currentUser.id; // add userId
 
-		const customData = { data: data, customHeaders: currentUser.customHeaders };
+		const customData = {
+			listingData,
+			customHeaders: currentUser.customHeaders,
+		};
 
 		console.log("customData", customData);
 

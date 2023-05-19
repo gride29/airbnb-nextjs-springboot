@@ -65,23 +65,26 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { data, customHeaders, id } = req.body; // Assuming the request body contains a "data" field
+						const { listingData, customHeaders, id } = req.body;
 
-						let listingData = null;
+						let responseData = null;
 
 						switch (true) {
-							case "data" in req.body:
-								listingData = await handleAddListing(data, customHeaders);
+							case "listingData" in req.body:
+								responseData = await handleAddListing(
+									listingData,
+									customHeaders
+								);
 								break;
 							case "id" in req.body:
-								listingData = await handleGetListingById(id, customHeaders);
+								responseData = await handleGetListingById(id, customHeaders);
 								break;
 							case "customHeaders" in req.body:
-								listingData = await handleGetListings(customHeaders);
+								responseData = await handleGetListings(customHeaders);
 								break;
 						}
 
-						res.status(200).json(listingData);
+						res.status(200).json(responseData);
 						return resolve();
 					}
 				} catch (error) {

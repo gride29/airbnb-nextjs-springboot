@@ -27,6 +27,12 @@ public class ReservationController {
 
     @GetMapping("/reservations/{id}")
     @ResponseStatus(HttpStatus.OK)
+    public Optional<Reservation> getReservation(@PathVariable("id") String id) {
+        return reservationService.findById(id);
+    }
+
+    @GetMapping("/reservations/listing/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public List<Reservation> getReservationByListingId(@PathVariable("id") String id) {
         return reservationService.findByListingId(id);
     }
@@ -35,6 +41,12 @@ public class ReservationController {
     @ResponseStatus(HttpStatus.OK)
     public List<Reservation> getReservationsByUserId(@PathVariable("id") String id) {
         return reservationService.findByUserId(id);
+    }
+
+    @GetMapping("/reservations/owner/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Reservation> getReservationsByListingOwner(@PathVariable("id") String id) {
+        return reservationService.findByListingOwner(id);
     }
 
     @PostMapping("/reservations")

@@ -52,7 +52,7 @@ public class ListingController {
                         listing.getCategory(),
                         listing.getImageSrc(),
                         listing.getLocation(),
-                        listing.getUserEmail(),
+                        listing.getUserId(),
                         LocalDateTime.now(),
                         listing.getGuestCount(),
                         listing.getRoomCount(),

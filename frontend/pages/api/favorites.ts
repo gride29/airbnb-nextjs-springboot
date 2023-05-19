@@ -80,23 +80,23 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { customHeaders, userId, listingId, method } = req.body; // Assuming the request body contains a "data" field
+						const { customHeaders, userId, listingId, method } = req.body;
 
-						let favoritesData = null;
+						let responseData = null;
 
 						switch (method) {
 							case "GET":
-								favoritesData = await handleGetFavorites(userId, customHeaders);
+								responseData = await handleGetFavorites(userId, customHeaders);
 								break;
 							case "POST":
-								favoritesData = await handleAddToFavorites(
+								responseData = await handleAddToFavorites(
 									userId,
 									listingId,
 									customHeaders
 								);
 								break;
 							case "DELETE":
-								favoritesData = await handleRemoveFromFavorites(
+								responseData = await handleRemoveFromFavorites(
 									userId,
 									listingId,
 									customHeaders
@@ -104,7 +104,7 @@ export default async function handler(
 								break;
 						}
 
-						res.status(200).json(favoritesData);
+						res.status(200).json(responseData);
 						return resolve();
 					}
 				} catch (error) {

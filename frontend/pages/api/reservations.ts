@@ -24,7 +24,7 @@ async function handleGetReservationsByListingId(
 	let reservation = null;
 
 	return axios
-		.get(`http://localhost:8080/api/reservations/${listingId}`, {
+		.get(`http://localhost:8080/api/reservations/listing/${listingId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -44,6 +44,25 @@ async function handleGetReservationsByUserId(
 
 	return axios
 		.get(`http://localhost:8080/api/reservations/user/${userId}`, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			reservation = response.data;
+			return reservation;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+async function handleGetReservationsByOwnerId(
+	ownerId: string,
+	customHeaders: any
+) {
+	let reservation = null;
+
+	return axios
+		.get(`http://localhost:8080/api/reservations/owner/${ownerId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -106,41 +125,53 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { data, customHeaders, listingId, userId, reservationId } =
-							req.body; // Assuming the request body contains a "data" field
+						const {
+							reservationData,
+							customHeaders,
+							listingId,
+							userId,
+							ownerId,
+							reservationId,
+						} = req.body;
 
-						let reservationData = null;
+						let responseData = null;
 
 						switch (true) {
-							case "data" in req.body:
-								reservationData = await handleAddReservation(
-									data,
+							case "reservationData" in req.body:
+								responseData = await handleAddReservation(
+									reservationData,
 									customHeaders
 								);
 								break;
 							case "listingId" in req.body:
-								reservationData = await handleGetReservationsByListingId(
+								responseData = await handleGetReservationsByListingId(
 									listingId,
 									customHeaders
 								);
 								break;
 							case "userId" in req.body:
-								reservationData = await handleGetReservationsByUserId(
+								responseData = await handleGetReservationsByUserId(
 									userId,
 									customHeaders
 								);
 								break;
+							case "ownerId" in req.body:
+								responseData = await handleGetReservationsByOwnerId(
+									ownerId,
+									customHeaders
+								);
+								break;
 							case "reservationId" in req.body:
-								reservationData = await handleRemoveReservationById(
+								responseData = await handleRemoveReservationById(
 									reservationId,
 									customHeaders
 								);
 							case "customHeaders" in req.body:
-								reservationData = await handleGetReservations(customHeaders);
+								responseData = await handleGetReservations(customHeaders);
 								break;
 						}
 
-						res.status(200).json(reservationData);
+						res.status(200).json(responseData);
 						return resolve();
 					}
 				} catch (error) {

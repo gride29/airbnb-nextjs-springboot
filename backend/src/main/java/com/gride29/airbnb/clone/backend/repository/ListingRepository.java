@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ListingRepository extends MongoRepository<Listing, String> {
     List<Listing> findByTitleContaining(String title);
+
+    List<Listing> findByUserId(String userId);
 }
