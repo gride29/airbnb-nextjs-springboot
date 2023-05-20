@@ -3,12 +3,15 @@ package com.gride29.airbnb.clone.backend.security.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.models.User;
+import com.gride29.airbnb.clone.backend.repository.ListingRepository;
 import com.gride29.airbnb.clone.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,12 +19,19 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public String[] getFavoriteListings(String userId) {
+    @Autowired
+    ListingRepository listingRepository;
+
+    public List<Listing> getFavoriteListings(String userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            return user.getFavoriteListings();
+            return Arrays.stream(user.getFavoriteListings())
+                    .map(listingId -> listingRepository.findById(listingId))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
         } else {
-            return new String[0];
+            return new ArrayList<>();
         }
     }
 

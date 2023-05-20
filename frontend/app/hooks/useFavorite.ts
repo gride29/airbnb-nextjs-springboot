@@ -20,10 +20,9 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
 	const loginModal = useLoginModal();
 
 	const hasFavorited = useMemo(async () => {
-		const list =
-			(await getFavorites(currentUser.id, currentUser)).favoriteListings || [];
+		const list = (await getFavorites(currentUser)).favoriteListings || [];
 
-		return list.includes(listingId);
+		return list.some((item: { id: string }) => item.id === listingId);
 	}, [currentUser, listingId]);
 
 	const toggleFavorite = useCallback(
@@ -36,9 +35,9 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
 
 			try {
 				if (await hasFavorited) {
-					removeFromFavorites(currentUser.id, listingId, currentUser);
+					removeFromFavorites(listingId, currentUser);
 				} else {
-					addToFavorites(currentUser.id, listingId, currentUser);
+					addToFavorites(listingId, currentUser);
 				}
 
 				router.refresh();

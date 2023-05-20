@@ -43,6 +43,12 @@ public class ListingController {
         return listingService.findById(id);
     }
 
+    @GetMapping("/listings/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Listing> getListingsByUserId(@PathVariable("id") String id) {
+        return listingService.findByUserId(id);
+    }
+
     @PostMapping("/listings")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Listing> createListing(@RequestBody Listing listing) {

@@ -33,6 +33,22 @@ async function handleGetListingById(id: string, customHeaders: any) {
 		});
 }
 
+async function handleGetListingsByUserId(userId: string, customHeaders: any) {
+	let listings = null;
+
+	return axios
+		.get(`http://localhost:8080/api/listings/user/${userId}`, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			listings = response.data;
+			return listings;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
 async function handleAddListing(data: any, customHeaders: any) {
 	let addedListing = null;
 
@@ -43,6 +59,25 @@ async function handleAddListing(data: any, customHeaders: any) {
 		.then((response) => {
 			addedListing = response.data;
 			return addedListing;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+async function handleRemoveListingByListingId(
+	listingId: string,
+	customHeaders: any
+) {
+	let listings = null;
+
+	return axios
+		.delete(`http://localhost:8080/api/listings/${listingId}`, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			listings = response.data;
+			return listings;
 		})
 		.catch((error) => {
 			console.log(error);
@@ -65,7 +100,8 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { listingData, customHeaders, id } = req.body;
+						const { listingData, customHeaders, id, userId, listingId } =
+							req.body;
 
 						let responseData = null;
 
@@ -79,6 +115,19 @@ export default async function handler(
 							case "id" in req.body:
 								responseData = await handleGetListingById(id, customHeaders);
 								break;
+							case "userId" in req.body:
+								responseData = await handleGetListingsByUserId(
+									userId,
+									customHeaders
+								);
+								break;
+							case "listingId" in req.body:
+								responseData = await handleRemoveListingByListingId(
+									listingId,
+									customHeaders
+								);
+								break;
+
 							case "customHeaders" in req.body:
 								responseData = await handleGetListings(customHeaders);
 								break;

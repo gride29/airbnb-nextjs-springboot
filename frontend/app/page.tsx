@@ -9,13 +9,13 @@ export default async function Home() {
 	const user = await getCurrentUser();
 	const listings = await getListings();
 
-	// const listing = await getListingById("645c1b4d73e186643c9019d5");
-	// console.log("fetched listing", listing);
-
 	if (!listings) {
 		return (
 			<ClientOnly>
-				<EmptyState showReset />
+				<EmptyState
+					title="Unauthorized"
+					subtitle="Please log in or register to view listings"
+				/>
 			</ClientOnly>
 		);
 	}

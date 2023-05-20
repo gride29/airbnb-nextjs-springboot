@@ -16,6 +16,7 @@ interface ListingCardProps {
 	actionLabel?: string;
 	actionId?: string;
 	currentUser?: any | null;
+	heartDisabled?: boolean;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -26,6 +27,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 	actionLabel,
 	actionId,
 	currentUser,
+	heartDisabled,
 }) => {
 	const router = useRouter();
 	const { getByValue } = useCountries();
@@ -80,7 +82,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
 						priority
 					/>
 					<div className="absolute top-3 right-3">
-						<HeartButton listingId={data.id} currentUser={currentUser} />
+						{!heartDisabled && (
+							<HeartButton listingId={data.id} currentUser={currentUser} />
+						)}
 					</div>
 				</div>
 				<div className="font-semibold text-lg">

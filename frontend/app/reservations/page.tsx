@@ -11,7 +11,7 @@ const ReservationsPage = async () => {
 	if (!currentUser) {
 		return (
 			<ClientOnly>
-				<EmptyState title="Unauthorized" subtitle="Please login" />
+				<EmptyState title="Unauthorized" subtitle="Please login or register" />
 			</ClientOnly>
 		);
 	}

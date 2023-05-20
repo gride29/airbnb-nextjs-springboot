@@ -1,6 +1,7 @@
 package com.gride29.airbnb.clone.backend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -20,7 +22,7 @@ public class UserController {
 
     @GetMapping("/favorites/{userId}")
     public ResponseEntity<Map<String, Object>> getFavoriteListings(@PathVariable String userId) {
-        String[] favorites = userService.getFavoriteListings(userId);
+        List<Listing> favorites = userService.getFavoriteListings(userId);
         Map<String, Object> response = new HashMap<>();
         response.put("userId", userId);
         response.put("favoriteListings", favorites);

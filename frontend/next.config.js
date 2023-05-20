@@ -6,6 +6,7 @@ const nextConfig = {
 	images: {
 		domains: ["avatars.githubusercontent.com", "res.cloudinary.com"],
 	},
+	reactStrictMode: false,
 };
 
 module.exports = nextConfig;
