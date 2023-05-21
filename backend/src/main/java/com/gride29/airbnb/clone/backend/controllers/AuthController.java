@@ -149,7 +149,7 @@ public class AuthController {
             String avatarUrl = principal.getAttribute("avatar_url");
 
             Map<String, Object> userDetails = new HashMap<>();
-            userDetails.put("login", login);
+            userDetails.put("username", login);
             userDetails.put("email", email);
             userDetails.put("avatarUrl", avatarUrl);
             userDetails.put("isOAuthUser", true);
