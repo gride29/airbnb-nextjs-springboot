@@ -4,6 +4,7 @@ import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.security.services.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,24 @@ public class ListingController {
             return listingService.findAll();
         else
             return listingService.findByTitleContaining(title);
+    }
+
+    @GetMapping("/listings/search")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<Listing>> searchListings(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) String roomCount,
+            @RequestParam(required = false) String guestCount,
+            @RequestParam(required = false) String bathroomCount,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String category
+    ) throws ParseException {
+        List<Listing> listings = listingService.searchListings(
+                userId, roomCount, guestCount, bathroomCount, location, startDate, endDate, category
+        );
+        return ResponseEntity.ok(listings);
     }
 
     @GetMapping("/listings/{id}")

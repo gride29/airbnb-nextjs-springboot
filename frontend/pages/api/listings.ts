@@ -49,6 +49,26 @@ async function handleGetListingsByUserId(userId: string, customHeaders: any) {
 		});
 }
 
+async function handleSearchListingsByQuery(query: any, customHeaders: any) {
+	let listings = null;
+
+	const queryParams = new URLSearchParams(query).toString();
+
+	const url = `http://localhost:8080/api/listings/search?${queryParams}`;
+
+	return axios
+		.get(url, {
+			headers: customHeaders,
+		})
+		.then((response) => {
+			listings = response.data;
+			return listings;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
 async function handleAddListing(data: any, customHeaders: any) {
 	let addedListing = null;
 
@@ -100,7 +120,7 @@ export default async function handler(
 						res.status(401).end("Not authorized");
 						return;
 					} else {
-						const { listingData, customHeaders, id, userId, listingId } =
+						const { listingData, customHeaders, id, userId, listingId, query } =
 							req.body;
 
 						let responseData = null;
@@ -127,7 +147,12 @@ export default async function handler(
 									customHeaders
 								);
 								break;
-
+							case "query" in req.body:
+								responseData = await handleSearchListingsByQuery(
+									query,
+									customHeaders
+								);
+								break;
 							case "customHeaders" in req.body:
 								responseData = await handleGetListings(customHeaders);
 								break;
