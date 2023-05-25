@@ -1,11 +1,17 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
+
+const cors = Cors({
+	methods: ["GET", "POST", "DELETE"],
+	origin: "http://localhost:3000",
+});
 
 async function handleGetListings(customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get("http://localhost:8080/api/listings", {
+		.get(`http://${process.env.BACKEND_URL}/api/listings`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -21,7 +27,7 @@ async function handleGetListingById(id: string, customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://localhost:8080/api/listings/${id}`, {
+		.get(`http://${process.env.BACKEND_URL}/api/listings/${id}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -37,7 +43,7 @@ async function handleGetListingsByUserId(userId: string, customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://localhost:8080/api/listings/user/${userId}`, {
+		.get(`http://${process.env.BACKEND_URL}/api/listings/user/${userId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -54,7 +60,7 @@ async function handleSearchListingsByQuery(query: any, customHeaders: any) {
 
 	const queryParams = new URLSearchParams(query).toString();
 
-	const url = `http://localhost:8080/api/listings/search?${queryParams}`;
+	const url = `http://${process.env.BACKEND_URL}/api/listings/search?${queryParams}`;
 
 	return axios
 		.get(url, {
@@ -73,7 +79,7 @@ async function handleAddListing(data: any, customHeaders: any) {
 	let addedListing = null;
 
 	return axios
-		.post("http://localhost:8080/api/listings", data, {
+		.post(`http://${process.env.BACKEND_URL}/api/listings`, data, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -92,7 +98,7 @@ async function handleRemoveListingByListingId(
 	let listings = null;
 
 	return axios
-		.delete(`http://localhost:8080/api/listings/${listingId}`, {
+		.delete(`http://${process.env.BACKEND_URL}/api/listings/${listingId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -108,13 +114,19 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	await cors(req, res, () => {});
 	return new Promise<void>(async (resolve) => {
 		switch (req.method) {
 			case "POST": {
 				try {
+					res.setHeader("Access-Control-Allow-Origin", "*");
+					res.setHeader(
+						"Access-Control-Allow-Headers",
+						"Origin, X-Requested-With, Content-Type, Accept"
+					);
 					if (
-						req.headers.referer !== "http://localhost:3000/" &&
-						req.headers.host !== "localhost:3000"
+						req.headers.referer !== "http://127.0.0.1:3000/" &&
+						req.headers.host !== "127.0.0.1:3000"
 					) {
 						console.log(req.headers.host);
 						res.status(401).end("Not authorized");

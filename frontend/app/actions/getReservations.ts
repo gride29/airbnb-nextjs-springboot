@@ -12,7 +12,7 @@ export async function getReservationsByListingId(listingId: string) {
 	let reservations = [];
 	if (user) {
 		return axios
-			.post("http://localhost:3000/api/reservations", {
+			.post("http://127.0.0.1:3000/api/reservations", {
 				customHeaders: user.customHeaders,
 				listingId,
 			})
@@ -31,7 +31,7 @@ export async function getReservationsByUserId(userId: string) {
 	let reservations = [];
 	if (user) {
 		return axios
-			.post("http://localhost:3000/api/reservations", {
+			.post("http://127.0.0.1:3000/api/reservations", {
 				customHeaders: user.customHeaders,
 				userId,
 			})
@@ -50,7 +50,7 @@ export async function getReservationsByOwnerId(ownerId: string) {
 	let reservations = [];
 	if (user) {
 		return axios
-			.post("http://localhost:3000/api/reservations", {
+			.post("http://127.0.0.1:3000/api/reservations", {
 				customHeaders: user.customHeaders,
 				ownerId,
 			})

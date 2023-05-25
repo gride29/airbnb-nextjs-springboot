@@ -64,7 +64,7 @@ export async function getListings(params: IListingsParams) {
 		// Check if query is empty
 		if (Object.keys(query).length === 0) {
 			return axios
-				.post("http://localhost:3000/api/listings", {
+				.post("http://127.0.0.1:3000/api/listings", {
 					customHeaders: user.customHeaders,
 				})
 				.then((response) => {
@@ -76,7 +76,7 @@ export async function getListings(params: IListingsParams) {
 				});
 		} else {
 			return axios
-				.post("http://localhost:3000/api/listings", {
+				.post("http://127.0.0.1:3000/api/listings", {
 					customHeaders: user.customHeaders,
 					query,
 				})
@@ -96,7 +96,7 @@ export async function getListingById(id: string) {
 	let listings = [];
 	if (user) {
 		return axios
-			.post("http://localhost:3000/api/listings", {
+			.post("http://127.0.0.1:3000/api/listings", {
 				customHeaders: user.customHeaders,
 				id: id,
 			})
@@ -115,7 +115,7 @@ export async function getListingsByUserId(userId: string) {
 	let listings = [];
 	if (user) {
 		return axios
-			.post("http://localhost:3000/api/listings", {
+			.post("http://127.0.0.1:3000/api/listings", {
 				customHeaders: user.customHeaders,
 				userId,
 			})

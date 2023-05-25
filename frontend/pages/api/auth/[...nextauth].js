@@ -18,7 +18,7 @@ const nextAuthOptions = (req, res) => {
 					}
 
 					return axios
-						.post("http://localhost:8080/api/auth/signin", {
+						.post(`http://${process.env.BACKEND_URL}/api/auth/signin`, {
 							username: credentials.username,
 							password: credentials.password,
 						})

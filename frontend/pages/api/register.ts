@@ -1,17 +1,24 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
+
+const cors = Cors({
+	methods: ["GET", "POST", "DELETE"],
+	origin: "http://localhost:3000",
+});
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	await cors(req, res, () => {});
 	return new Promise<void>(async (resolve) => {
 		switch (req.method) {
 			case "POST": {
 				try {
 					if (
-						req.headers.referer !== "http://localhost:3000/" &&
-						req.headers.host !== "localhost:3000"
+						req.headers.referer !== "http://127.0.0.1:3000/" &&
+						req.headers.host !== "127.0.0.1:3000"
 					) {
 						console.log(req.headers.host);
 						res.status(401).end("Not authorized");
@@ -20,7 +27,7 @@ export default async function handler(
 						const { email, username, password } = req.body;
 
 						const response = await axios.post(
-							"http://localhost:8080/api/auth/signup",
+							`http://${process.env.BACKEND_URL}/api/auth/signup`,
 							{
 								username,
 								email,

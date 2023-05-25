@@ -1,11 +1,17 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
+
+const cors = Cors({
+	methods: ["GET", "POST", "DELETE"],
+	origin: "http://localhost:3000",
+});
 
 async function handleGetReservations(customHeaders: any) {
 	let reservations = null;
 
 	return axios
-		.get("http://localhost:8080/api/reservations", {
+		.get(`http://${process.env.BACKEND_URL}/api/reservations`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -24,9 +30,12 @@ async function handleGetReservationsByListingId(
 	let reservation = null;
 
 	return axios
-		.get(`http://localhost:8080/api/reservations/listing/${listingId}`, {
-			headers: customHeaders,
-		})
+		.get(
+			`http://${process.env.BACKEND_URL}/api/reservations/listing/${listingId}`,
+			{
+				headers: customHeaders,
+			}
+		)
 		.then((response) => {
 			reservation = response.data;
 			return reservation;
@@ -43,7 +52,7 @@ async function handleGetReservationsByUserId(
 	let reservation = null;
 
 	return axios
-		.get(`http://localhost:8080/api/reservations/user/${userId}`, {
+		.get(`http://${process.env.BACKEND_URL}/api/reservations/user/${userId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -62,9 +71,12 @@ async function handleGetReservationsByOwnerId(
 	let reservation = null;
 
 	return axios
-		.get(`http://localhost:8080/api/reservations/owner/${ownerId}`, {
-			headers: customHeaders,
-		})
+		.get(
+			`http://${process.env.BACKEND_URL}/api/reservations/owner/${ownerId}`,
+			{
+				headers: customHeaders,
+			}
+		)
 		.then((response) => {
 			reservation = response.data;
 			return reservation;
@@ -78,7 +90,7 @@ async function handleAddReservation(data: any, customHeaders: any) {
 	let addedReservation = null;
 
 	return axios
-		.post("http://localhost:8080/api/reservations", data, {
+		.post(`http://${process.env.BACKEND_URL}/api/reservations`, data, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -97,9 +109,12 @@ async function handleRemoveReservationById(
 	let status = null;
 
 	return axios
-		.delete(`http://localhost:8080/api/reservations/${reservationId}`, {
-			headers: customHeaders,
-		})
+		.delete(
+			`http://${process.env.BACKEND_URL}/api/reservations/${reservationId}`,
+			{
+				headers: customHeaders,
+			}
+		)
 		.then((response) => {
 			status = response.status;
 			return status;
@@ -113,13 +128,14 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	await cors(req, res, () => {});
 	return new Promise<void>(async (resolve) => {
 		switch (req.method) {
 			case "POST": {
 				try {
 					if (
-						req.headers.referer !== "http://localhost:3000/" &&
-						req.headers.host !== "localhost:3000"
+						req.headers.referer !== "http://127.0.0.1:3000/" &&
+						req.headers.host !== "127.0.0.1:3000"
 					) {
 						console.log(req.headers.host);
 						res.status(401).end("Not authorized");

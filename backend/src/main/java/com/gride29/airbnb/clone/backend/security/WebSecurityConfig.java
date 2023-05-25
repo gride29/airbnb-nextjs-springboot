@@ -91,7 +91,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated().and()
                 .oauth2Login()
-                .defaultSuccessUrl("http://localhost:3000/")
+                .defaultSuccessUrl("http://127.0.0.1:3000/")
                 .permitAll();
 
         http.authenticationProvider(authenticationProvider());

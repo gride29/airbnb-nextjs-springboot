@@ -50,7 +50,7 @@ const RentModal: React.FC<RentModalProps> = ({ currentUser }) => {
 			roomCount: 1,
 			bathroomCount: 1,
 			imageSrc: "",
-			price: 1,
+			price: null,
 			title: "",
 			description: "",
 		},
