@@ -1,5 +1,6 @@
 import axios from "axios";
 import getCurrentUser from "./getCurrentUser";
+import { useRouter } from "next/navigation";
 
 export interface IListingsParams {
 	userId?: string;
@@ -93,7 +94,6 @@ export async function getListings(params: IListingsParams) {
 
 export async function getListingById(id: string) {
 	const user = await getCurrentUser();
-	console.log(id, "id from getListingById");
 	let listings = [];
 	if (user) {
 		return axios
