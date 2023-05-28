@@ -18,7 +18,7 @@ const nextAuthOptions = (req, res) => {
 					}
 
 					return axios
-						.post(`http://${process.env.BACKEND_URL}/api/auth/signin`, {
+						.post(`${process.env.BACKEND_URL}/api/auth/signin`, {
 							username: credentials.username,
 							password: credentials.password,
 						})

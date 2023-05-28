@@ -11,7 +11,7 @@ async function handleGetListings(customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/listings`, {
+		.get(`${process.env.BACKEND_URL}/api/listings`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -27,7 +27,7 @@ async function handleGetListingById(id: string, customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/listings/${id}`, {
+		.get(`${process.env.BACKEND_URL}/api/listings/${id}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -43,7 +43,7 @@ async function handleGetListingsByUserId(userId: string, customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/listings/user/${userId}`, {
+		.get(`${process.env.BACKEND_URL}/api/listings/user/${userId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -60,7 +60,7 @@ async function handleSearchListingsByQuery(query: any, customHeaders: any) {
 
 	const queryParams = new URLSearchParams(query).toString();
 
-	const url = `http://${process.env.BACKEND_URL}/api/listings/search?${queryParams}`;
+	const url = `${process.env.BACKEND_URL}/api/listings/search?${queryParams}`;
 
 	return axios
 		.get(url, {
@@ -79,7 +79,7 @@ async function handleAddListing(data: any, customHeaders: any) {
 	let addedListing = null;
 
 	return axios
-		.post(`http://${process.env.BACKEND_URL}/api/listings`, data, {
+		.post(`${process.env.BACKEND_URL}/api/listings`, data, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -98,7 +98,7 @@ async function handleRemoveListingByListingId(
 	let listings = null;
 
 	return axios
-		.delete(`http://${process.env.BACKEND_URL}/api/listings/${listingId}`, {
+		.delete(`${process.env.BACKEND_URL}/api/listings/${listingId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {

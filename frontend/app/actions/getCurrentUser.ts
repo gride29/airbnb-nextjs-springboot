@@ -40,7 +40,7 @@ export default async function getCurrentUser() {
 		}
 
 		return axios
-			.get(`http://${process.env.BACKEND_URL}/api/auth/oauthUser`, {
+			.get(`${process.env.BACKEND_URL}/api/auth/oauthUser`, {
 				headers: {
 					Cookie: `${cookieName}=${cookieValue}`,
 				},

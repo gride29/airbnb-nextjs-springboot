@@ -11,7 +11,7 @@ async function handleGetReservations(customHeaders: any) {
 	let reservations = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/reservations`, {
+		.get(`${process.env.BACKEND_URL}/api/reservations`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -30,12 +30,9 @@ async function handleGetReservationsByListingId(
 	let reservation = null;
 
 	return axios
-		.get(
-			`http://${process.env.BACKEND_URL}/api/reservations/listing/${listingId}`,
-			{
-				headers: customHeaders,
-			}
-		)
+		.get(`${process.env.BACKEND_URL}/api/reservations/listing/${listingId}`, {
+			headers: customHeaders,
+		})
 		.then((response) => {
 			reservation = response.data;
 			return reservation;
@@ -52,7 +49,7 @@ async function handleGetReservationsByUserId(
 	let reservation = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/reservations/user/${userId}`, {
+		.get(`${process.env.BACKEND_URL}/api/reservations/user/${userId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -71,12 +68,9 @@ async function handleGetReservationsByOwnerId(
 	let reservation = null;
 
 	return axios
-		.get(
-			`http://${process.env.BACKEND_URL}/api/reservations/owner/${ownerId}`,
-			{
-				headers: customHeaders,
-			}
-		)
+		.get(`${process.env.BACKEND_URL}/api/reservations/owner/${ownerId}`, {
+			headers: customHeaders,
+		})
 		.then((response) => {
 			reservation = response.data;
 			return reservation;
@@ -90,7 +84,7 @@ async function handleAddReservation(data: any, customHeaders: any) {
 	let addedReservation = null;
 
 	return axios
-		.post(`http://${process.env.BACKEND_URL}/api/reservations`, data, {
+		.post(`${process.env.BACKEND_URL}/api/reservations`, data, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -109,12 +103,9 @@ async function handleRemoveReservationById(
 	let status = null;
 
 	return axios
-		.delete(
-			`http://${process.env.BACKEND_URL}/api/reservations/${reservationId}`,
-			{
-				headers: customHeaders,
-			}
-		)
+		.delete(`${process.env.BACKEND_URL}/api/reservations/${reservationId}`, {
+			headers: customHeaders,
+		})
 		.then((response) => {
 			status = response.status;
 			return status;

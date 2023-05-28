@@ -27,7 +27,7 @@ export default async function handler(
 						const { email, username, password } = req.body;
 
 						const response = await axios.post(
-							`http://${process.env.BACKEND_URL}/api/auth/signup`,
+							`${process.env.BACKEND_URL}/api/auth/signup`,
 							{
 								username,
 								email,

@@ -11,7 +11,7 @@ async function handleGetFavorites(userId: string, customHeaders: any) {
 	let listings = null;
 
 	return axios
-		.get(`http://${process.env.BACKEND_URL}/api/favorites/${userId}`, {
+		.get(`${process.env.BACKEND_URL}/api/favorites/${userId}`, {
 			headers: customHeaders,
 		})
 		.then((response) => {
@@ -32,7 +32,7 @@ async function handleAddToFavorites(
 
 	return axios
 		.post(
-			`http://${process.env.BACKEND_URL}/api/favorites/${userId}`,
+			`${process.env.BACKEND_URL}/api/favorites/${userId}`,
 			{ favoriteListing: listingId },
 			{
 				headers: customHeaders,
@@ -55,7 +55,7 @@ async function handleRemoveFromFavorites(
 	let listings = null;
 
 	return axios
-		.delete(`http://${process.env.BACKEND_URL}/api/favorites/${userId}`, {
+		.delete(`${process.env.BACKEND_URL}/api/favorites/${userId}`, {
 			headers: customHeaders,
 			data: {
 				favoriteListing: listingId,
