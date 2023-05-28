@@ -25,6 +25,14 @@ WORKDIR /opt/app
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/airbnb-clone-backend-0.0.1-SNAPSHOT.jar .
 
+# Consume the build arguments
+ARG GITHUB_CLIENT_ID
+ARG GITHUB_CLIENT_SECRET
+ARG MONGODB_PASSWORD
+ENV CLIENT_ID=$GITHUB_CLIENT_ID
+ENV CLIENT_SECRET=$GITHUB_CLIENT_SECRET
+ENV DB_PASSWORD=$MONGODB_PASSWORD
+
 # Set the command to run the Spring Boot application
 CMD ["java", "-jar", "airbnb-clone-backend-0.0.1-SNAPSHOT.jar"]
 
