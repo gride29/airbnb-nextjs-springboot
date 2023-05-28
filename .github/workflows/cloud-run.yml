@@ -42,7 +42,7 @@ jobs:
       - name: Build and tag the docker image
         run: |-
           if [[ ${{ github.workspace }}/backend* ]]; then
-            docker build ./backend --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA
+            docker build ./backend --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA --env-file $ENV_FILE
           else
             docker build ./frontend --tag gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA
           fi
