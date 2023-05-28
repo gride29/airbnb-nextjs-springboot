@@ -11,7 +11,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
-  REGION: europe-central2-a
+  REGION: europe-central2
   # project-name but it can be anything you want
   REPO_NAME_BACKEND: airbnb-nextjs-springboot-backend
   REPO_NAME_FRONTEND: airbnb-nextjs-springboot-frontend
