@@ -40,7 +40,7 @@ jobs:
       - name: Build and tag the docker image
         run: |-
           if [[ ${{ github.workspace }}/backend* ]]; then
-            docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} ./backend --tag gcr.io/$PROJECT_ID/$REPO_NAME-backend:$GITHUB_SHA 
+            docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} ./backend --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA 
           else
             docker build ./frontend --tag gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA
           fi
