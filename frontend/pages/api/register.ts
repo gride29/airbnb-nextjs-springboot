@@ -17,8 +17,8 @@ export default async function handler(
 			case "POST": {
 				try {
 					if (
-						req.headers.referer !== "http://127.0.0.1:3000/" &&
-						req.headers.host !== "127.0.0.1:3000"
+						req.headers.referer !== `${process.env.FRONTEND_URL}/` &&
+						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}`
 					) {
 						console.log(req.headers.host);
 						res.status(401).end("Not authorized");

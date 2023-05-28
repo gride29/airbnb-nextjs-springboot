@@ -2,9 +2,11 @@ import axios from "axios";
 
 export async function getFavorites(user: any) {
 	let listings = [];
+
+	console.log("siemano", process.env.FRONTEND_URL);
 	if (user) {
 		return axios
-			.post("http://127.0.0.1:3000/api/favorites", {
+			.post(`${process.env.FRONTEND_URL}/api/favorites`, {
 				customHeaders: user.customHeaders,
 				userId: user.id,
 				method: "GET",
@@ -23,7 +25,7 @@ export async function addToFavorites(listingId: string, user: any) {
 	let listings = [];
 	if (user) {
 		return axios
-			.post("http://127.0.0.1:3000/api/favorites", {
+			.post(`${process.env.FRONTEND_URL}/api/favorites`, {
 				customHeaders: user.customHeaders,
 				userId: user.id,
 				listingId,
@@ -43,7 +45,7 @@ export async function removeFromFavorites(listingId: string, user: any) {
 	let listings = [];
 	if (user) {
 		return axios
-			.post("http://127.0.0.1:3000/api/favorites", {
+			.post(`${process.env.FRONTEND_URL}/api/favorites`, {
 				customHeaders: user.customHeaders,
 				userId: user.id,
 				listingId,

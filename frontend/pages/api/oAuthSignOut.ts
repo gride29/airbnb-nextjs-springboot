@@ -25,7 +25,7 @@ export default async function handler(
 			case "GET": {
 				try {
 					// Only allow calls from the client side
-					if (req.headers.referer !== "http://127.0.0.1:3000/") {
+					if (req.headers.referer !== `${process.env.FRONTEND_URL}/`) {
 						res.status(401).end("Not authorized");
 						return;
 					} else {

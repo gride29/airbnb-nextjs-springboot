@@ -124,12 +124,14 @@ export default async function handler(
 						"Access-Control-Allow-Headers",
 						"Origin, X-Requested-With, Content-Type, Accept"
 					);
+					console.log(req, "lul");
 					if (
-						req.headers.referer !== "http://127.0.0.1:3000/" &&
-						req.headers.host !== "127.0.0.1:3000"
+						req.headers.referer !== `${process.env.FRONTEND_URL}/` &&
+						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}`
 					) {
-						console.log(req.headers.host);
-						res.status(401).end("Not authorized");
+						console.log(req.headers.host, "siemano");
+						console.log(req.headers.referer, "kolano");
+						res.status(401).end("Not authorized sds");
 						return;
 					} else {
 						const { listingData, customHeaders, id, userId, listingId, query } =
