@@ -10,9 +10,7 @@ interface IParams {
 }
 
 const ListingPage = async ({ params }: { params: IParams }) => {
-	await new Promise((resolve) => setTimeout(resolve, 10000));
-
-	const listing = await getListingById(params.listingId as string);
+	const listing = await getListingById("");
 	const reservations = await getReservations(params);
 	const user = await getCurrentUser();
 
@@ -23,8 +21,6 @@ const ListingPage = async ({ params }: { params: IParams }) => {
 			</ClientOnly>
 		);
 	}
-
-	console.log(params, "myParams");
 
 	return (
 		<ClientOnly>

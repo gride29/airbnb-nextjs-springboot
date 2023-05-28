@@ -8,7 +8,7 @@ import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import axios from "axios";
 import { addDays, differenceInCalendarDays, eachDayOfInterval } from "date-fns";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -29,10 +29,18 @@ const ListingClient: React.FC<ListingClientProps> = ({
 	listing,
 	reservations = [],
 	currentUser,
-	paramsId,
 }) => {
 	const loginModal = useLoginModal();
 	const router = useRouter();
+	const pathname = usePathname();
+	const listingId = pathname?.split("/")[2];
+
+	console.log(listing, "listing");
+
+	if (Array.isArray(listing)) {
+		const filteredListing = listing.filter((item) => item.id === listingId);
+		listing = filteredListing[0];
+	}
 
 	const disabledDates = useMemo(() => {
 		let dates: Date[] = [];
@@ -106,7 +114,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 		return categories.find((item) => item.label === listing.category);
 	}, [listing.category]);
 
-	console.log(paramsId, "paramsId");
+	console.log(listingId, "currentPathName");
 
 	return (
 		<Container>
