@@ -22,12 +22,14 @@ interface ListingClientProps {
 	reservations?: any;
 	listing?: any;
 	currentUser?: any;
+	paramsId?: string;
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({
 	listing,
 	reservations = [],
 	currentUser,
+	paramsId,
 }) => {
 	const loginModal = useLoginModal();
 	const router = useRouter();
@@ -104,7 +106,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 		return categories.find((item) => item.label === listing.category);
 	}, [listing.category]);
 
-	console.log(listing, "listingOnListingClient");
+	console.log(paramsId, "paramsId");
 
 	return (
 		<Container>

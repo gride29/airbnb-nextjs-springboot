@@ -36,6 +36,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
 				listing={listing}
 				reservations={reservations}
 				currentUser={user}
+				paramsId={params.listingId}
 			/>
 		</ClientOnly>
 	);
