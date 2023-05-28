@@ -3,7 +3,6 @@ import axios from "axios";
 export async function getFavorites(user: any) {
 	let listings = [];
 
-	console.log("siemano", process.env.FRONTEND_URL);
 	if (user) {
 		return axios
 			.post(`${process.env.FRONTEND_URL}/api/favorites`, {
