@@ -12,7 +12,6 @@ on:
 env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
   REGION: europe-central2
-  # project-name but it can be anything you want
   REPO_NAME_BACKEND: airbnb-nextjs-springboot-backend
   REPO_NAME_FRONTEND: airbnb-nextjs-springboot-frontend
 
@@ -37,34 +36,36 @@ jobs:
       - name: Authorize Docker push
         run: gcloud auth configure-docker
 
-      - name: Build and tag the docker image
-        run: |-
-          if [[ ${{ github.event_path }} == *"backend"* ]]; then
-            docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} --build-arg DEFAULT_SUCCESS_URL=${{ secrets.DEFAULT_SUCCESS_URL }} ./backend --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA 
-          else
-            docker build ./frontend --tag gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA
-          fi
+      - name: Build and tag the backend docker image
+        working-directory: ./backend
+        run: |
+          docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} --build-arg DEFAULT_SUCCESS_URL=${{ secrets.DEFAULT_SUCCESS_URL }} --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA .
 
-      - name: Push the image to the Google Container Registry (GCR)
-        run: |-
-          if [[ ${{ github.event_path }} == *"backend"* ]]; then
-            docker push gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA
-          else
-            docker push gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA
-          fi
+      - name: Build and tag the frontend docker image
+        working-directory: ./frontend
+        run: |
+          docker build --tag gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA .
 
-      - name: Deploy
-        run: |-
-          if [[ ${{ github.event_path }} == *"backend"* ]]; then
-            gcloud run deploy $REPO_NAME_BACKEND \
+      - name: Push the backend image to the Google Container Registry (GCR)
+        run: |
+          docker push gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA
+
+      - name: Push the frontend image to the Google Container Registry (GCR)
+        run: |
+          docker push gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA
+
+      - name: Deploy backend
+        run: |
+          gcloud run deploy $REPO_NAME_BACKEND \
             --region $REGION \
             --image gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA \
             --platform "managed" \
             --quiet
-          else
-            gcloud run deploy $REPO_NAME_FRONTEND \
+
+      - name: Deploy frontend
+        run: |
+          gcloud run deploy $REPO_NAME_FRONTEND \
             --region $REGION \
             --image gcr.io/$PROJECT_ID/$REPO_NAME_FRONTEND:$GITHUB_SHA \
             --platform "managed" \
             --quiet
-          fi

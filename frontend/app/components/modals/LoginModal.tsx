@@ -89,7 +89,7 @@ const LoginModal = () => {
 				label="Continue with Github"
 				icon={AiFillGithub}
 				onClick={() => {
-					router.push(`http://127.0.0.1:8080/oauth2/authorization/github`);
+					router.push(`${process.env.BACKEND_URL}/oauth2/authorization/github`);
 				}}
 			/>
 			<div className="text-neutral-500 text-center mt-4 font-light ">
@@ -121,4 +121,3 @@ const LoginModal = () => {
 };
 
 export default LoginModal;
-
