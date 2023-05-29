@@ -3,6 +3,7 @@ package com.gride29.airbnb.clone.backend.security;
 import com.gride29.airbnb.clone.backend.security.jwt.AuthEntryPointJwt;
 import com.gride29.airbnb.clone.backend.security.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +35,9 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    @Value("${gride29.app.defaultSuccessUrl}")
+    private String defaultSuccessUrl;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -91,7 +95,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated().and()
                 .oauth2Login()
-                .defaultSuccessUrl("http://127.0.0.1:3000/")
+                .defaultSuccessUrl(defaultSuccessUrl)
                 .permitAll();
 
         http.authenticationProvider(authenticationProvider());
