@@ -103,7 +103,6 @@ export async function getListingById(id: string) {
 			})
 			.then((response) => {
 				listings = response.data;
-				console.log(listings, "listingsDataActions");
 				return listings;
 			})
 			.catch((error) => {

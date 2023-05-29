@@ -35,11 +35,16 @@ const ListingClient: React.FC<ListingClientProps> = ({
 	const pathname = usePathname();
 	const listingId = pathname?.split("/")[2];
 
-	console.log(listing, "listing");
-
 	if (Array.isArray(listing)) {
 		const filteredListing = listing.filter((item) => item.id === listingId);
 		listing = filteredListing[0];
+	}
+
+	if (Array.isArray(reservations)) {
+		const filteredReservations = reservations.filter(
+			(item) => item.listingId === listingId
+		);
+		reservations = filteredReservations;
 	}
 
 	const disabledDates = useMemo(() => {
@@ -113,8 +118,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
 	const category = useMemo(() => {
 		return categories.find((item) => item.label === listing.category);
 	}, [listing.category]);
-
-	console.log(listingId, "currentPathName");
 
 	return (
 		<Container>

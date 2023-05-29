@@ -18,7 +18,8 @@ export default async function handler(
 				try {
 					if (
 						req.headers.referer !== `${process.env.FRONTEND_URL}/` &&
-						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}`
+						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}` &&
+						req.headers.host !== "localhost:3000"
 					) {
 						console.log(req.headers.host);
 						res.status(401).end("Not authorized");

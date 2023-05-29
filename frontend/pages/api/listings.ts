@@ -32,7 +32,6 @@ async function handleGetListingById(id: string, customHeaders: any) {
 		})
 		.then((response) => {
 			listings = response.data;
-			console.log(listings, "listingsDataApi");
 			return listings;
 		})
 		.catch((error) => {
@@ -127,15 +126,14 @@ export default async function handler(
 					);
 					if (
 						req.headers.referer !== `${process.env.FRONTEND_URL}/` &&
-						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}`
+						req.headers.host !== `${process.env.FRONTEND_URL_SHORT}` &&
+						req.headers.host !== "localhost:3000"
 					) {
 						res.status(401).end("Not authorized");
 						return;
 					} else {
 						const { listingData, customHeaders, id, userId, listingId, query } =
 							req.body;
-
-						console.log(req.body, "req.body");
 
 						let responseData = null;
 

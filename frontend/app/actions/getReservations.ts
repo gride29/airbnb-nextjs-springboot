@@ -7,6 +7,24 @@ interface IParams {
 	ownerId?: string;
 }
 
+export async function getAllReservations() {
+	const user = await getCurrentUser();
+	let reservations = [];
+	if (user) {
+		return axios
+			.post(`${process.env.FRONTEND_URL}/api/reservations`, {
+				customHeaders: user.customHeaders,
+			})
+			.then((response) => {
+				reservations = response.data;
+				return reservations;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+}
+
 export async function getReservationsByListingId(listingId: string) {
 	const user = await getCurrentUser();
 	let reservations = [];
@@ -82,6 +100,10 @@ export default async function getReservations(params: IParams) {
 
 		if (ownerId) {
 			reservationsData = await getReservationsByOwnerId(ownerId);
+		}
+
+		if (!listingId && !userId && !ownerId) {
+			reservationsData = await getAllReservations();
 		}
 
 		return reservationsData;
