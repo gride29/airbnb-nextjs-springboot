@@ -53,6 +53,9 @@ public class AuthController {
     @Value("${gride29.app.defaultSuccessUrl}")
     private String defaultSuccessUrl;
 
+    @Value("${gride29.app.rootDomainUrl}")
+    private String rootDomainUrl;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -182,7 +185,7 @@ public class AuthController {
     public String removeCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("JSESSIONID", null);
         cookie.setPath("/");
-        cookie.setDomain("127.0.0.1");
+        cookie.setDomain(rootDomainUrl);
         cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
