@@ -3,6 +3,8 @@ package com.gride29.airbnb.clone.backend.controllers;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.gride29.airbnb.clone.backend.models.Role;
@@ -22,18 +24,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gride29.airbnb.clone.backend.repository.RoleRepository;
 import com.gride29.airbnb.clone.backend.repository.UserRepository;
 import com.gride29.airbnb.clone.backend.security.services.UserDetailsImpl;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000, http://127.0.0.1:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -174,5 +171,23 @@ public class AuthController {
         } else {
             return ResponseEntity.ok(null);
         }
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+    @GetMapping("/signout")
+    public String removeCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/");
+        cookie.setDomain("127.0.0.1");
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
+        return "Logged out";
     }
 }

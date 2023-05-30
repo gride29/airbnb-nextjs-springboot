@@ -8,6 +8,7 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { BiLogInCircle } from "react-icons/bi";
 import useRentModal from "@/app/hooks/useRentModal";
+import axios from "axios";
 
 interface UserMenuProps {
 	currentUser?: any | null;
@@ -27,8 +28,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
 	const handleCustomSignOut = async () => {
 		if (currentUser.isOAuthUser) {
-			const res = await fetch(`/api/signout`);
-			router.refresh();
+			axios
+				.get(`${process.env.BACKEND_URL}/api/auth/signout`, {
+					withCredentials: true,
+				})
+				.then((response) => {
+					if (response.status === 200) {
+						router.refresh();
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		} else {
 			signOut();
 		}
