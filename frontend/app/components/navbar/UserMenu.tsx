@@ -27,7 +27,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
 	const handleCustomSignOut = async () => {
 		if (currentUser.isOAuthUser) {
-			const res = await fetch(`/api/oauthsignout`);
+			const res = await fetch(`/api/signout`);
 			router.refresh();
 		} else {
 			signOut();
