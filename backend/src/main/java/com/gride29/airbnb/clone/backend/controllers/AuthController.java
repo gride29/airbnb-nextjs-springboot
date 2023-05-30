@@ -50,6 +50,9 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Value("${gride29.app.defaultSuccessUrl}")
+    private String defaultSuccessUrl;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -184,7 +187,7 @@ public class AuthController {
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
         response.setStatus(HttpServletResponse.SC_OK);
-        response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
+        response.setHeader("Access-Control-Allow-Origin", defaultSuccessUrl);
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
