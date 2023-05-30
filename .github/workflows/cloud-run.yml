@@ -39,7 +39,7 @@ jobs:
       - name: Build and tag the backend docker image
         working-directory: ./backend
         run: |
-          docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} --build-arg DEFAULT_SUCCESS_URL=${{ secrets.DEFAULT_SUCCESS_URL }} --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA .
+          docker build --build-arg MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }} --build-arg GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} --build-arg GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} --build-arg DEFAULT_SUCCESS_URL=${{ secrets.DEFAULT_SUCCESS_URL }} --build-arg ROOT_DOMAIN_URL=${{ secrets.ROOT_DOMAIN_URL }} --tag gcr.io/$PROJECT_ID/$REPO_NAME_BACKEND:$GITHUB_SHA .
 
       - name: Build and tag the frontend docker image
         working-directory: ./frontend
