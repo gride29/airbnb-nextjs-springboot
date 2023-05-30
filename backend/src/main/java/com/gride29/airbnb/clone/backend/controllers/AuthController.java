@@ -16,6 +16,7 @@ import com.gride29.airbnb.clone.backend.models.ERole;
 import com.gride29.airbnb.clone.backend.payload.response.MessageResponse;
 import com.gride29.airbnb.clone.backend.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -173,7 +174,7 @@ public class AuthController {
         }
     }
 
-    @CrossOrigin(origins = "http://127.0.0.1:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+    @CrossOrigin(origins = "${gride29.app.defaultSuccessUrl}", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
     @GetMapping("/signout")
     public String removeCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("JSESSIONID", null);
