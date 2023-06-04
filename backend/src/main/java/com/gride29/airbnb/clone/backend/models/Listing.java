@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Document
 public class Listing {
@@ -161,5 +162,17 @@ public class Listing {
                 ", bathroomCount=" + bathroomCount +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Listing other = (Listing) obj;
+        return Objects.equals(this.id, other.id);
     }
 }
