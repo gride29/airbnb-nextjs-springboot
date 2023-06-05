@@ -66,7 +66,7 @@ public class ListingController {
         listing.setCreatedAt(LocalDateTime.now());
         Listing createdListing = listingService.save(listing);
         if (createdListing != null) {
-            return ResponseEntity.ok(createdListing);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdListing);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
