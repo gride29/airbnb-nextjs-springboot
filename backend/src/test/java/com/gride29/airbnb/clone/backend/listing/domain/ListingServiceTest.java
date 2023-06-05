@@ -1,6 +1,7 @@
 package com.gride29.airbnb.clone.backend.listing.domain;
 
 import com.gride29.airbnb.clone.backend.TestConfig;
+import com.gride29.airbnb.clone.backend.dto.ListingSearchRequest;
 import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.models.Reservation;
 import com.gride29.airbnb.clone.backend.repository.ListingRepository;
@@ -51,6 +52,17 @@ public class ListingServiceTest {
         String endDate = "2022-01-10T00:00:00.000Z";
         String category = "Category";
 
+        ListingSearchRequest request = new ListingSearchRequest(
+                userId,
+                roomCount,
+                guestCount,
+                bathroomCount,
+                location,
+                startDate,
+                endDate,
+                category
+        );
+
         LocalDateTime createdAt = LocalDateTime.now();
         Listing listing1 = new Listing(
                 "Apartment 1",
@@ -82,7 +94,7 @@ public class ListingServiceTest {
         listingRepository.save(listing1);
         listingRepository.save(listing2);
 
-        List<Listing> actualListings = listingService.searchListings(userId, roomCount, guestCount, bathroomCount, location, startDate, endDate, category);
+        List<Listing> actualListings = listingService.searchListings(request);
 
         Assertions.assertEquals(1, actualListings.size());
         Assertions.assertEquals(listing1, actualListings.get(0));
@@ -96,6 +108,17 @@ public class ListingServiceTest {
         String bathroomCount = "2";
         String location = "New York";
 
+        ListingSearchRequest request = new ListingSearchRequest(
+                "test",
+                "-1",
+                "-1",
+                "-1",
+                "test",
+                null,
+                null,
+                "test"
+        );
+
         LocalDateTime createdAt = LocalDateTime.now();
         Listing listing1 = new Listing(
                 "Apartment 1",
@@ -127,13 +150,13 @@ public class ListingServiceTest {
         listingRepository.save(listing1);
         listingRepository.save(listing2);
 
-        List<Listing> actualListings = listingService.searchListings("test", "-1", "-1", "-1", "test", null, null, "test");
+        List<Listing> actualListings = listingService.searchListings(request);
 
         Assertions.assertTrue(actualListings.isEmpty());
     }
 
     @Test
-    public void shouldRemoveListingsAndLinkedReservationsByListingId() {
+    public void shouldDeleteListingAndLinkedReservationsByListingId() {
         LocalDateTime createdAt = LocalDateTime.now();
         Listing listing = new Listing(
                 "1",
@@ -163,5 +186,33 @@ public class ListingServiceTest {
 
         List<Reservation> remainingReservations = reservationRepository.findByListingId(listing.getId());
         Assertions.assertEquals(0, remainingReservations.size(), "Associated reservations should be deleted");
+    }
+
+    @Test
+    public void shouldNotDeleteListingAndLinkedReservationsByListingId() {
+        LocalDateTime createdAt = LocalDateTime.now();
+        Listing listing = new Listing(
+                "1",
+                "Apartment 1",
+                "Category 1",
+                "image1.jpg",
+                "Location 1",
+                "User1",
+                createdAt,
+                2,
+                3,
+                2,
+                100
+        );
+
+        listingRepository.save(listing);
+
+        Reservation reservation1 = new Reservation("User2", listing.getId(), LocalDateTime.now(), LocalDateTime.now().plusDays(1), 200, LocalDateTime.now());
+        Reservation reservation2 = new Reservation("User3", listing.getId(), LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(3), 300, LocalDateTime.now());
+        reservationRepository.save(reservation1);
+        reservationRepository.save(reservation2);
+
+        boolean deleted = listingService.deleteById("InvalidId");
+        Assertions.assertFalse(deleted, "Listing and associated reservations should not be deleted");
     }
 }

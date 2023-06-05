@@ -1,22 +1,15 @@
 package com.gride29.airbnb.clone.backend.controllers;
 
+import com.gride29.airbnb.clone.backend.dto.ListingSearchRequest;
 import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.security.services.ListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,61 +34,56 @@ public class ListingController {
 
     @GetMapping("/listings/search")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Listing>> searchListings(
-            @RequestParam(required = false) String userId,
-            @RequestParam(required = false) String roomCount,
-            @RequestParam(required = false) String guestCount,
-            @RequestParam(required = false) String bathroomCount,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate,
-            @RequestParam(required = false) String category
-    ) throws ParseException {
-        List<Listing> listings = listingService.searchListings(
-                userId, roomCount, guestCount, bathroomCount, location, startDate, endDate, category
-        );
+    public ResponseEntity<List<Listing>> searchListings(@Valid @ModelAttribute ListingSearchRequest request) throws ParseException {
+        List<Listing> listings = listingService.searchListings(request);
+        if (listings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(listings);
     }
 
     @GetMapping("/listings/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Listing> getListingById(@PathVariable("id") String id) {
-        return listingService.findById(id);
+    public Listing getListingById(@PathVariable("id") String id) {
+        return listingService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, null));
     }
 
     @GetMapping("/listings/user/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Listing> getListingsByUserId(@PathVariable("id") String id) {
-        return listingService.findByUserId(id);
+    public ResponseEntity<List<Listing>> getListingsByUserId(@PathVariable("id") String id) {
+        List<Listing> listings = listingService.findByUserId(id);
+        if (listings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(listings);
+        }
     }
 
     @PostMapping("/listings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Listing> createListing(@RequestBody Listing listing) {
-        return Optional.ofNullable(listingService
-                .save(new Listing(listing.getTitle(),
-                        listing.getDescription(),
-                        listing.getCategory(),
-                        listing.getImageSrc(),
-                        listing.getLocation(),
-                        listing.getUserId(),
-                        LocalDateTime.now(),
-                        listing.getGuestCount(),
-                        listing.getRoomCount(),
-                        listing.getBathroomCount(),
-                        listing.getPrice())));
+    public ResponseEntity<Listing> createListing(@RequestBody Listing listing) {
+        listing.setCreatedAt(LocalDateTime.now());
+        Listing createdListing = listingService.save(listing);
+        if (createdListing != null) {
+            return ResponseEntity.ok(createdListing);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/listings/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Listing> updateListing(@PathVariable("id") String id, @RequestBody Listing listing) {
-        return Optional.ofNullable(listingService.update(id, listing));
+    public ResponseEntity<Listing> updateListing(@PathVariable("id") String id, @RequestBody Listing listing) {
+        Optional<Listing> optionalListing = Optional.ofNullable(listingService.update(id, listing));
+        return optionalListing.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/listings/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteListing(@PathVariable("id") String id) {
-        listingService.deleteById(id);
+    public ResponseEntity<Void> deleteListing(@PathVariable("id") String id) {
+        boolean deleted = listingService.deleteById(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/listings")

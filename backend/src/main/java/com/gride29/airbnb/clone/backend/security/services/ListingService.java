@@ -1,5 +1,6 @@
 package com.gride29.airbnb.clone.backend.security.services;
 
+import com.gride29.airbnb.clone.backend.dto.ListingSearchRequest;
 import com.gride29.airbnb.clone.backend.models.Reservation;
 import com.gride29.airbnb.clone.backend.repository.ListingRepository;
 import com.gride29.airbnb.clone.backend.repository.ReservationRepository;
@@ -35,40 +36,38 @@ public class ListingService {
     @Autowired
     ReservationRepository reservationRepository;
 
-    public List<Listing> searchListings(String userId, String roomCount, String guestCount,
-                                        String bathroomCount, String location,
-                                        String startDate, String endDate, String category) throws ParseException {
+    public List<Listing> searchListings(ListingSearchRequest request) throws ParseException {
         Query query = new Query();
 
-        if (userId != null) {
-            query.addCriteria(Criteria.where("userId").is(userId));
+        if (request.getUserId() != null) {
+            query.addCriteria(Criteria.where("userId").is(request.getUserId()));
         }
 
-        if (category != null) {
-            Pattern regexPattern = Pattern.compile(category, Pattern.CASE_INSENSITIVE);
+        if (request.getCategory() != null) {
+            Pattern regexPattern = Pattern.compile(request.getCategory(), Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("category").regex(regexPattern));
         }
 
-        if (roomCount != null) {
-            query.addCriteria(Criteria.where("roomCount").gte(Integer.parseInt(roomCount)));
+        if (request.getRoomCount() != null) {
+            query.addCriteria(Criteria.where("roomCount").gte(Integer.parseInt(request.getRoomCount())));
         }
 
-        if (guestCount != null) {
-            query.addCriteria(Criteria.where("guestCount").gte(Integer.parseInt(guestCount)));
+        if (request.getGuestCount() != null) {
+            query.addCriteria(Criteria.where("guestCount").gte(Integer.parseInt(request.getGuestCount())));
         }
 
-        if (bathroomCount != null) {
-            query.addCriteria(Criteria.where("bathroomCount").gte(Integer.parseInt(bathroomCount)));
+        if (request.getBathroomCount() != null) {
+            query.addCriteria(Criteria.where("bathroomCount").gte(Integer.parseInt(request.getBathroomCount())));
         }
 
-        if (location != null) {
-            query.addCriteria(Criteria.where("location").is(location));
+        if (request.getLocation() != null) {
+            query.addCriteria(Criteria.where("location").is(request.getLocation()));
         }
 
-        if (startDate != null && endDate != null) {
+        if (request.getStartDate() != null && request.getEndDate() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            Date parsedStartDate = dateFormat.parse(startDate);
-            Date parsedEndDate = dateFormat.parse(endDate);
+            Date parsedStartDate = dateFormat.parse(request.getStartDate());
+            Date parsedEndDate = dateFormat.parse(request.getEndDate());
 
             Criteria reservationsCriteria = new Criteria().andOperator(
                     Criteria.where("startDate").lt(parsedEndDate),
@@ -119,7 +118,7 @@ public class ListingService {
         }
     }
 
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         // Fetch the listing by ID
         Optional<Listing> optionalListing = listingRepository.findById(id);
         if (optionalListing.isPresent()) {
@@ -138,10 +137,10 @@ public class ListingService {
 
             // Delete the listing
             listingRepository.deleteById(id);
-        } else {
-            // Handle case when the listing is not found
-            throw new IllegalArgumentException("Listing not found with ID: " + id);
+
+            return true;
         }
+        return false;
     }
 
     public void deleteAll() {
