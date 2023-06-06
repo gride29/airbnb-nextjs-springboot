@@ -32,33 +32,9 @@ public class ListingRepositoryTest {
 
     @Test
     public void shouldReturnMatchingListingsWithTitleContaining() {
-        LocalDateTime createdAt = LocalDateTime.now();
-        Listing listing1 = new Listing(
-                "Apartment 1",
-                "Description 1",
-                "Category 1",
-                "image1.jpg",
-                "Location 1",
-                "User1",
-                createdAt,
-                2,
-                3,
-                2,
-                100
-        );
-        Listing listing2 = new Listing(
-                "Apartment 2",
-                "Description 2",
-                "Category 2",
-                "image2.jpg",
-                "Location 2",
-                "User2",
-                createdAt,
-                4,
-                2,
-                1,
-                150
-        );
+        List<Listing> testListings = createTestListings();
+        Listing listing1 = testListings.get(0);
+        Listing listing2 = testListings.get(1);
         listingRepository.save(listing1);
         listingRepository.save(listing2);
 
@@ -70,33 +46,9 @@ public class ListingRepositoryTest {
 
     @Test
     public void shouldNotReturnMatchingListingsWithTitleContaining() {
-        LocalDateTime createdAt = LocalDateTime.now();
-        Listing listing1 = new Listing(
-                "Apartment 1",
-                "Description 1",
-                "Category 1",
-                "image1.jpg",
-                "Location 1",
-                "User1",
-                createdAt,
-                2,
-                3,
-                2,
-                100
-        );
-        Listing listing2 = new Listing(
-                "Apartment 2",
-                "Description 2",
-                "Category 2",
-                "image2.jpg",
-                "Location 2",
-                "User2",
-                createdAt,
-                4,
-                2,
-                1,
-                150
-        );
+        List<Listing> testListings = createTestListings();
+        Listing listing1 = testListings.get(0);
+        Listing listing2 = testListings.get(1);
         listingRepository.save(listing1);
         listingRepository.save(listing2);
 
@@ -107,33 +59,9 @@ public class ListingRepositoryTest {
 
     @Test
     public void shouldReturnMatchingListingsWithMatchingUserId() {
-        LocalDateTime createdAt = LocalDateTime.now();
-        Listing listing1 = new Listing(
-                "Apartment 1",
-                "Description 1",
-                "Category 1",
-                "image1.jpg",
-                "Location 1",
-                "User1",
-                createdAt,
-                2,
-                3,
-                2,
-                100
-        );
-        Listing listing2 = new Listing(
-                "Apartment 2",
-                "Description 2",
-                "Category 2",
-                "image2.jpg",
-                "Location 2",
-                "User2",
-                createdAt,
-                4,
-                2,
-                1,
-                150
-        );
+        List<Listing> testListings = createTestListings();
+        Listing listing1 = testListings.get(0);
+        Listing listing2 = testListings.get(1);
         listingRepository.save(listing1);
         listingRepository.save(listing2);
 
@@ -145,6 +73,19 @@ public class ListingRepositoryTest {
 
     @Test
     public void shouldNotReturnMatchingListingsWithMatchingUserId() {
+        List<Listing> testListings = createTestListings();
+        Listing listing1 = testListings.get(0);
+        Listing listing2 = testListings.get(1);
+
+        listingRepository.save(listing1);
+        listingRepository.save(listing2);
+
+        List<Listing> actualListings = listingRepository.findByUserId("InvalidUserId");
+
+        Assertions.assertTrue(actualListings.isEmpty());
+    }
+
+    private List<Listing> createTestListings() {
         LocalDateTime createdAt = LocalDateTime.now();
         Listing listing1 = new Listing(
                 "Apartment 1",
@@ -173,11 +114,6 @@ public class ListingRepositoryTest {
                 150
         );
 
-        listingRepository.save(listing1);
-        listingRepository.save(listing2);
-
-        List<Listing> actualListings = listingRepository.findByUserId("InvalidUserId");
-
-        Assertions.assertTrue(actualListings.isEmpty());
+        return Arrays.asList(listing1, listing2);
     }
 }
