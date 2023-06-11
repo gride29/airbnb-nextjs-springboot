@@ -1,9 +1,7 @@
 package com.gride29.airbnb.clone.backend.reservation.domain;
 
 import com.gride29.airbnb.clone.backend.TestConfig;
-import com.gride29.airbnb.clone.backend.models.Listing;
 import com.gride29.airbnb.clone.backend.models.Reservation;
-import com.gride29.airbnb.clone.backend.repository.ListingRepository;
 import com.gride29.airbnb.clone.backend.repository.ReservationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
