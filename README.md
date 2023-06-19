@@ -1,5 +1,5 @@
-# Airbnb Next.js/Spring Boot Project
-This project is a small application built with Next.js, Spring Boot, and MongoDB. It allows users to browse and book accommodations similar to Airbnb. The application is hosted on Google Cloud Run using Docker containers, and the CI/CD pipeline is set up with GitHub Actions.
+# airbnb-nextjs-springboot
+This project is a small-scale application built with Next.js, Spring Boot, and MongoDB. It aims to provide users with a platform similar to Airbnb, where they can browse and book accommodations. The application is hosted on Google Cloud Run, leveraging the power of Docker containers for deployment. The development process follows a CI/CD pipeline implemented using GitHub Actions.
 
 ## Features
 - User Registration and Authentication: Users can sign up and log in to the application using their email address and password or via GitHub.
