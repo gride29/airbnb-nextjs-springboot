@@ -12,9 +12,9 @@
     <groupId>com.gride29</groupId>
     <artifactId>airbnb-clone-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-boot-security-data-mongodb</name>
-    <description>Demo project for Spring Boot Auth with Spring Security,
-        JWT, MongoDB
+    <name>airbnb-clone-backend</name>
+    <description>
+        Backend for Airbnb clone project
     </description>
 
     <properties>
